@@ -31,6 +31,7 @@ var urls = ["https://www.places4students.com/Places/Details.aspx?HousingID=OA3hO
 ,"https://www.places4students.com/Places/Details.aspx?HousingID=UKl2%2bhLWUh4%3d&SchoolID=8SnFMiLCDsA%3d"
 ];
 
+var out='';
 casper.start().eachThen(urls, function(response) {
   this.thenOpen(response.data, function(response) {
   	this.page.injectJs('./jquery.js');
@@ -48,12 +49,18 @@ casper.start().eachThen(urls, function(response) {
   			});
   		return text;
   	});
-  	for(var i = 0; i<values.length; i++)
+  	out += values[0];
+  	for(var i = 1; i<values.length; i++)
   	{
-  		if(values[i])
-  			console.log(values[i]);
+  		if(values[i]) out += ','+values[i];
   	}
-  	console.log("");
+  	out += '\n\n';
   });
-})
-casper.run();
+});
+
+casper.run(function(){
+	var fs = require('fs');
+	var path = 'propertydata_p4s.txt';
+	fs.write(path, out, 'w');
+	phantom.exit();
+});
