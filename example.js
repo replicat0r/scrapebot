@@ -59,17 +59,15 @@ var urls = ["https://www.places4students.com/Places/Details.aspx?HousingID=OA3hO
 	console.log(urls);
 });*/
 
-casper.start(function{
-	var fs = require('fs');
-	var path = 'output.txt';
-	var content = 'Hello World!';
-	fs.write(path, content, 'w');
-});
+
+/*var path = 'output.txt';
+var content = 'Hello World!';
+casper.write(path, content, 'w');*/
+
+var out = "";
 
 
-
-
-/*casper.start().eachThen(urls, function(response) {
+casper.start().eachThen(urls, function(response) {
   this.thenOpen(response.data, function(response) {
   	this.page.injectJs('./jquery.js');
   	var values = this.evaluate(function(){
@@ -87,12 +85,22 @@ casper.start(function{
   		return text;
   	});
   	var fs = require('fs');
-  	for(var i = 0; i<urls.length; i++)
+  	out = urls[0];
+  	for(var i = 1; i<urls.length; i++)
   	{
   		if(urls[i])
-  			fs.write("propertydata_p4s.txt",urls[i], 'w');
+  			out +=','+ urls[i]; 
   	}
-  	fs.write("propertydata_p4s.txt","\n", 'w');
+  	out += '\n\n'
   });
-})*/
+})
+console.log(out);
 casper.run();
+
+var fs = require('fs');
+
+var path = 'output.txt';
+var content = 'Hello World!';
+fs.write(path, out, 'w');
+
+phantom.exit();
